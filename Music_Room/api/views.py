@@ -1,12 +1,38 @@
+from django.db.models import query
 from django.shortcuts import render
-from rest_framework import generics
+from rest_framework import generics, status
 from .models import *
 from .serializers import *
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 # Create your views here.
 class RoomCreate(generics.CreateAPIView):
-    queryset = Room.objects.all()
-    serializer_class = RoomSerializer #serializer_class
+    #queryset = Room.objects.all()
+    serializer_class = CreateRoomSerializer #serializer_class
+
+    def post(self, request, format = None):
+        if not self.request.session.exists(self.request.session.session_key): #checks if user has an active session
+            self.request.session.create()
+        
+        serializer = self.serializer_class(data = request.data)
+        if serializer.is_valid():
+            guest_pausible = serializer.data.get('guest_pausible')
+            votes_to_skip = serializer.data.get('votes_to_skip')
+            host = self.request.session.session_key
+            queryset = Room.objects.filter(host = host)
+            if queryset.exists():
+                room = queryset[0]
+                room.guest_pausible = guest_pausible
+                room.votes_to_skip = votes_to_skip
+                room.save(update_fields = ['guest_pausible', 'votes_to_skip']) # pass parameter to update rather then create a new room
+            else:
+                room = Room(host = host, guest_pausible = guest_pausible, votes_to_skip = votes_to_skip)
+                room.save()
+    
+            return Response(RoomSerializer(room).data, status = status.HTTP_201_CREATED)
+        return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)
+    
 
 class RoomView(generics.ListAPIView):
     queryset = Room.objects.all()
