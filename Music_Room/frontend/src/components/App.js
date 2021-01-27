@@ -10,6 +10,7 @@ export default class App extends Component{
 
     render(){
         return( 
+            //returns the Homepage component
             <div>
                 <HomePage />
 
@@ -17,5 +18,6 @@ export default class App extends Component{
     }
 }
 
+//research this later ///
 const appDiv = document.getElementById("app");
 render(<App name = "Henyers"/>, appDiv);

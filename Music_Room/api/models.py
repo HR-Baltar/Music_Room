@@ -4,12 +4,14 @@ import string, random
 
 # Create your models here.
 
+# generates a random defaut code
 def generate_code():
     length = 6
 
+    # instantiate a code until it is considered unique
     while True:
         code = ''.join(random.choices(string.ascii_uppercase, k = length)) #string.ascii
-        if Room.objects.filter(code = code).count() == 0:
+        if Room.objects.filter(code = code).count() == 0: # checks if the code is unique
             break
     return code
 
