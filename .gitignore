@@ -1,0 +1,4 @@
+# Ignore node_modules folder and Music Room 1
+Music_Room_Main/frontend/node_modules
+Music_Room_Main/FRONTEND_STUFF
+Music_Room_1
