@@ -8,6 +8,7 @@ from rest_framework.response import Response
 
 # Create your views here.
 class RoomCreate(APIView):
+
     serializer_class = CreateRoomSerializer #serializer_class
 
     #handles POST METHOD
@@ -35,14 +36,32 @@ class RoomCreate(APIView):
                 room.guest_pausible = guest_pausible
                 room.votes_to_skip = votes_to_skip
                 room.save(update_fields = ['guest_pausible', 'votes_to_skip']) # pass parameter to update rather then create a new room
-
+                self.request.session['room_code'] = room.code
+                return Response(RoomSerializer(room).data, status = status.HTTP_200_OK)
             else:
                 #create a new room otherwise
                 room = Room(host = host, guest_pausible = guest_pausible, votes_to_skip = votes_to_skip)
                 room.save()
-    
-            return Response(RoomSerializer(room).data, status = status.HTTP_201_CREATED)
+                self.request.session['room_code'] = room.code
+                return Response(RoomSerializer(room).data, status = status.HTTP_201_CREATED)
         return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)
+
+class JoinRoom(APIView):
+    lookup_url_kwarg = 'code'
+
+    def post(self, request, format = None):
+        if not self.request.session.exists(self.request.session.session_key): 
+            self.request.session.create()
+
+        code = request.data.get(self.lookup_url_kwarg)
+        if code != None:
+            room_result = Room.objects.filter(code=code)
+            if len(room_result) > 0:
+                room = room_result[0]
+                self.request.session['room_code'] = code
+                return Response({'message': "Room Join!"}, status=status.HTTP_200_OK)
+            return Response({'Bad Request': 'Invalid Code'}, status = status.HTTP_400_BAD_REQUEST) 
+        return Response({'Bad Request': 'Invalid Post Data'}, status = status.HTTP_400_BAD_REQUEST)
     
 class GetRoom(APIView):
     serializer_class = RoomSerializer
