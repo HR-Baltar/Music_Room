@@ -8,7 +8,7 @@ export default class JoinRoomPage extends Component {
         super(props);
         this.state = {
             roomCode: "",
-            error: "",
+            error: "hello",
         }
     }
     render() {
@@ -17,7 +17,7 @@ export default class JoinRoomPage extends Component {
             <Grid container Spacing = {1} align = "center">
                 <Grid item xs = {12}>
                     <Typography variant = "h4"  component = "h4">
-                        Join A Room Today!
+                        Join A Room
                     </Typography>
                 </Grid>
                 <Grid item xs = {12}>
@@ -25,7 +25,7 @@ export default class JoinRoomPage extends Component {
                         error = {this.state.error}
                         label = "Code"
                         placeholder = "Enter a Room Code"
-                        value={ this.state.roomCode}
+                        value = {this.state.roomCode}
                         helperText = {this.state.error}
                         variant = "outlined"
                     />
