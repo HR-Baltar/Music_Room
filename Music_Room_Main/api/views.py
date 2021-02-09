@@ -5,6 +5,7 @@ from .models import *
 from .serializers import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.http import JsonResponse
 
 # Create your views here.
 class RoomCreate(APIView):
@@ -82,3 +83,25 @@ class GetRoom(APIView):
 class RoomView(generics.ListAPIView):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
+
+class UserInRoom(APIView):
+    def get(self, request, format=None):
+        if not self.request.session.exists(self.request.session.session_key): 
+            self.request.session.create()
+
+        data = {
+            'code': self.request.session.get('room_code')
+        }
+        return JsonResponse(data, status=status.HTTP_200_OK)
+
+class LeaveRoom(APIView):
+    def post(self, request, format=None): # post -> change, add , etc
+        if 'room_code' in self.request.session:
+            self.request.session.pop('room_code')
+            host_id = self.request.session.session_key
+            room_results = Room.objects.filter(host=host_id)
+            if len(room_results) > 0:
+                room = room_results[0]
+                room.delete()
+
+        return Response({'Message': 'Success'}, status=status.HTTP_200_OK)
