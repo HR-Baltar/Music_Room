@@ -25,7 +25,7 @@ SECRET_KEY = 'n7litf5-s*7^-^ie2+u7zso@cg+zy4@8)sow&#kq2mi*ui-)2h'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []#allowed to run outside local network '0.0.0.0' #or add IP addr to this list
 
 
 # Application definition

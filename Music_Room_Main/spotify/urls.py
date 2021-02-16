@@ -8,4 +8,5 @@ urlpatterns = [
     path('current-song', views.CurrentSong.as_view()),
     path('play-song', views.PlaySong.as_view()),
     path('pause-song', views.PauseSong.as_view()),
+    path('skip-song', views.SkipSong.as_view()),
 ]
