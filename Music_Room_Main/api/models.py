@@ -16,9 +16,9 @@ def generate_code():
     return code
 
 class Room(models.Model):
-    code = models.CharField(max_length=8, default=generate_code, unique=True)
+    code = models.CharField(max_length=8, default=generate_code, unique=True) # set unique equal to true so that this value is unique in the database
     host = models.CharField(max_length=50, unique=True)
     guest_pausible = models.BooleanField(null = False, default=True)
     votes_to_skip = models.IntegerField(null=False, default=1)
     created_at = models.DateTimeField(auto_now_add=True)
-    current_song = models.CharField(max_length=50, null=True)
+    current_song = models.CharField(max_length=50, null=True) #set null equal to true for existing models not to give any errors

@@ -1,1 +1,1 @@
-import App from "./components/App";
+import App from "./functions/App"; // change folders
