@@ -56,7 +56,7 @@ export default function Info(props){
             {/* sub info title*/}
             <Grid item xs={12} align = "center">
                 <h4>
-                    {page ===  pages.JOIN ? joinName(): hostName()}
+                    {page === "pages.join" ? joinName(): hostName()}
                 </h4>
             {/* </Grid>
             {/* change sub info title }

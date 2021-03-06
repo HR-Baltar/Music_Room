@@ -1,1 +1,1 @@
-import App from "./components/App"; // change folders
+import App from "./components/App"; // change folders {components OR funtions}
