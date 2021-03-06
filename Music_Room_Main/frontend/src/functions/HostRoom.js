@@ -6,6 +6,15 @@ import { Link} from "react-router-dom";
 
 export default function HostRoom(props){
     return(
-        <h1>Host A ROOM</h1>
+        <Grid container>
+            <h1>Host A ROOM</h1>
+            <Grid item xs = {1}>
+                <Button to="/" component={Link}>
+                    back
+                </Button>
+            </Grid>
+        </Grid>
+        
+
     );
 }
